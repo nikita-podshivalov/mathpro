@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Онлайн-курс самостоятельной подготовки к ОГЭ и ЕГЭ по математике: диагностика, адаптивный маршрут, тренажёры, работа над ошибками и симуляции экзамена." />
+  <meta name="theme-color" content="#1f4e8c" />
+  <title>МатематикаPro — онлайн-курс подготовки к ОГЭ и ЕГЭ</title>
+
+  <style>
+    /* ================= Базовые стили ================= */
+    :root {
+      --primary: #1f4e8c;
+      --primary-dark: #163a69;
+      --accent: #f5a623;
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --text: #1c2533;
+      --muted: #5a6678;
+      --border: #dde4ec;
+      --radius: 14px;
+      --shadow: 0 6px 24px rgba(20, 40, 80, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Inter", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    h1, h2, h3 { line-height: 1.25; margin: 0 0 16px; }
+    h1 { font-size: clamp(28px, 4vw, 44px); }
+    h2 { font-size: clamp(24px, 3vw, 34px); }
+    h3 { font-size: 20px; }
+    p { margin: 0 0 14px; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section { padding: 64px 0; }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 26px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); text-decoration: none; transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--primary); border-color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: #fff; text-decoration: none; }
+
+    /* ================= Скип-ссылка ================= */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 16px;
+      z-index: 1000;
+    }
+    .skip-link:focus { left: 10px; top: 10px; }
+
+    /* ================= Шапка ================= */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 20px;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--primary);
+    }
+    .logo-mark {
+      width: 34px; height: 34px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    nav.main-nav ul {
+      display: flex;
+      gap: 22px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav.main-nav a { color: var(--text); font-weight: 500; font-size: 15px; }
+    nav.main-nav a:hover { color: var(--primary); text-decoration: none; }
+
+    .header-cta { display: flex; gap: 10px; }
+
+    .burger {
+      display: none;
+      background: none;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      nav.main-nav ul { display: none; }
+      .burger { display: block; }
+      nav.main-nav.open ul {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 16px 20px;
+        gap: 14px;
+      }
+    }
+
+    /* ================= Hero ================= */
+    .hero {
+      background: linear-gradient(135deg, #eef4fc 0%, #f7f9fc 100%);
+      padding: 80px 0 72px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .hero h1 { color: var(--primary-dark); }
+    .hero-lead { font-size: 19px; color: var(--muted); max-width: 520px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 26px; }
+
+    .hero-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+    .hero-card h3 { margin-bottom: 14px; color: var(--primary); }
+    .hero-card ul { list-style: none; margin: 0; padding: 0; }
+    .hero-card li {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px dashed var(--border);
+      font-size: 15px;
+    }
+    .hero-card li:last-child { border-bottom: none; }
+    .hero-card li::before { content: "✔"; color: #2e9e5b; font-weight: 700; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ================= Общие заголовки секций ================= */
+    .section-head { max-width: 720px; margin: 0 auto 40px; text-align: center; }
+    .section-head p { color: var(--muted); }
+
+    /* ================= Карточки треков ================= */
+    .tracks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .track-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+    .track-card h3 { color: var(--primary); }
+    .track-tag {
+      align-self: flex-start;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef4fc;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .track-card ul { padding-left: 18px; margin: 0 0 18px; }
+    .track-card ul li { margin-bottom: 6px; color: var(--muted); }
+    .track-card .btn { margin-top: auto; align-self: flex-start; }
+
+    /* ================= Блоки курса ================= */
+    .blocks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+    .block-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .block-card .num {
+      display: inline-grid;
+      place-items: center;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .block-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .block-card p { color: var(--muted); font-size: 15px; margin: 0; }
+
+    /* ================= Как это работает ================= */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+      counter-reset: step;
+    }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      top: -14px; left: 20px;
+      width: 32px; height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .step h3 { font-size: 17px; margin-top: 10px; }
+    .step p { color: var(--muted); font-size: 15px; margin: 0; }
+
+    /* ================= FAQ ================= */
+    .faq { max-width: 820px; margin: 0 auto; }
+    .faq details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+    .faq summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--primary-dark);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; color: var(--primary); font-size: 20px; line-height: 1; }
+    .faq details[open] summary::after { content: "–"; }
+    .faq details p { margin: 12px 0 0; color: var(--muted); font-size: 15px; }
+
+    /* ================= Форма ================= */
+    .signup {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .signup h2 { color: #fff; }
+    .signup p { color: #dbe6f5; }
+    .signup .form-note { font-size: 13px; color: #c5d6ef; margin-top: 14px; }
+    .signup .form-note a { color: #ffd97a; }
+
+    form.signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    form.signup-form input,
+    form.signup-form select {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 10px;
+      border: 1px solid #c9d6ea;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+    }
+    form.signup-form input:focus,
+    form.signup-form select:focus {
+      outline: 3px solid #ffd97a;
+      outline-offset: 1px;
+    }
+    .consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      color: #dbe6f5;
+      line-height: 1.5;
+    }
+    .consent input { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
+    .consent a { color: #ffd97a; }
+    form.signup-form button {
+      background: var(--accent);
+      color: #1c2533;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    form.signup-form button:hover { background: #e5941b; }
+    form.signup-form button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+    @media (max-width: 900px) {
+      .signup { grid-template-columns: 1fr; padding: 32px; }
+    }
+
+    /* ================= Контакты ================= */
+    .contacts { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .contact-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .contact-card h3 { font-size: 16px; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .contact-card p { margin: 0; color: var(--muted); font-size: 15px; }
+    .contact-card .placeholder {
+      display: inline-block;
+      background: #fff3d6;
+      color: #8a6200;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 13px;
+      font-family: monospace;
+      margin-top: 6px;
+    }
+
+    /* ================= Подвал ================= */
+    footer.site-footer {
+      background: #12203a;
+      color: #c5d3e6;
+      padding: 48px 0 24px;
+      font-size: 14px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .footer-grid h4 { color: #fff; font-size: 15px; margin: 0 0 12px; }
+    .footer-grid ul { list-style: none; padding: 0; margin: 0; }
+    .footer-grid li { margin-bottom: 8px; }
+    .footer-grid a { color: #c5d3e6; }
+    .footer-grid a:hover { color: #fff; }
+    .footer-bottom {
+      border-top: 1px solid #22345a;
+      padding-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #8fa3c4;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ================= Cookie banner ================= */
+    .cookie-banner {
+      position: fixed;
+      left: 20px; right: 20px; bottom: 20px;
+      background: #12203a;
+      color: #e7eef8;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      z-index: 999;
+      font-size: 14px;
+    }
+    .cookie-banner p { margin: 0; flex: 1 1 320px; }
+    .cookie-banner a { color: #ffd97a; }
+    .cookie-banner button {
+      background: var(--accent);
+      color: #1c2533;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .cookie-banner button:hover { background: #e5941b; }
+    .cookie-banner.hidden { display: none; }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+
+  <!-- ================= Шапка ================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="logo" aria-label="МатематикаPro — на главную">
+        <span class="logo-mark" aria-hidden="true">∑</span>
+        <span>МатематикаPro</span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Основная навигация">
+        <ul>
+          <li><a href="#tracks">Направления</a></li>
+          <li><a href="#blocks">Структура курса</a></li>
+          <li><a href="#how">Как это работает</a></li>
+          <li><a href="#faq">Вопросы</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-cta">
+        <a href="#signup" class="btn btn-primary">Начать бесплатно</a>
+        <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= Hero ================= -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div>
+          <span class="hero-badge">ОГЭ · ЕГЭ · база и профиль</span>
+          <h1 id="hero-title">Готовьтесь к экзамену по математике самостоятельно — но не в одиночку</h1>
+          <p class="hero-lead">
+            Онлайн-курс с диагностикой, адаптивным маршрутом, интерактивными тренажёрами
+            и работой над ошибками. Вы всегда знаете, что делать дальше и сколько баллов
+            уже набрали.
+          </p>
+          <div class="hero-actions">
+            <a href="#signup" class="btn btn-primary">Пройти диагностику</a>
+            <a href="#blocks" class="btn btn-outline">Как устроен курс</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Что входит в курс">
+          <h3>Что входит в курс</h3>
+          <ul>
+            <li>Входная диагностика и персональный маршрут</li>
+            <li>Короткая теория и формулы под каждый блок</li>
+            <li>Интерактивные тренажёры с подсказками</li>
+            <li>Работа над ошибками с интервальным повторением</li>
+            <li>Пробные экзамены с таймером и разбором</li>
+            <li>Прозрачный прогноз балла и «карта рисков»</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= Направления ================= -->
+    <section id="tracks" aria-labelledby="tracks-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="tracks-title">Направления подготовки</h2>
+          <p>Два независимых трека с единой логикой: теория → тренажёр → контроль → симуляция.</p>
+        </div>
+
+        <div class="tracks">
+          <article class="track-card">
+            <span class="track-tag">ОГЭ · 9 класс</span>
+            <h3>Подготовка к ОГЭ</h3>
+            <ul>
+              <li>Числа, выражения, уравнения и неравенства</li>
+              <li>Функции, координаты, последовательности</li>
+              <li>Геометрия и геометрия на клетчатой бумаге</li>
+              <li>Вероятность и статистика</li>
+              <li>Вторая часть: развёрнутые решения</li>
+            </ul>
+            <a href="#signup" class="btn btn-outline">Подробнее</a>
+          </article>
+
+          <article class="track-card">
+            <span class="track-tag">ЕГЭ · базовый</span>
+            <h3>Подготовка к ЕГЭ (база)</h3>
+            <ul>
+              <li>Вычисления и преобразования</li>
+              <li>Уравнения, неравенства и функции</li>
+              <li>Планиметрия и стереометрия</li>
+              <li>Текстовые и прикладные задачи</li>
+              <li>Вероятность и статистика</li>
+            </ul>
+            <a href="#signup" class="btn btn-outline">Подробнее</a>
+          </article>
+
+          <article class="track-card">
+            <span class="track-tag">ЕГЭ · профиль</span>
+            <h3>Подготовка к ЕГЭ (профиль)</h3>
+            <ul>
+              <li>Все линии базового уровня в углублении</li>
+              <li>Производная и исследование функций</li>
+              <li>Экономические задачи</li>
+              <li>Задачи с параметром и теория чисел</li>
+              <li>Оформление второй части и критерии</li>
+            </ul>
+            <a href="#signup" class="btn btn-outline">Подробнее</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Структура курса ================= -->
+    <section id="blocks" style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);" aria-labelledby="blocks-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="blocks-title">Структура курса</h2>
+          <p>Каждый раздел устроен одинаково: понятная теория, интерактивный тренажёр и контрольный тест.</p>
+        </div>
+
+        <div class="blocks">
+          <article class="block-card">
+            <span class="num">1</span>
+            <h3>Диагностика и навигация</h3>
+            <p>Входной тест, знакомство с форматом экзамена и стартовый маршрут: что учить сразу, а что повторить.</p>
+          </article>
+          <article class="block-card">
+            <span class="num">2</span>
+            <h3>Содержательные блоки</h3>
+            <p>Крупные линии экзамена: числа, алгебра, функции, геометрия, вероятность — с теорией и тренажёрами.</p>
+          </article>
+          <article class="block-card">
+            <span class="num">3</span>
+            <h3>Работа над ошибками</h3>
+            <p>Сквозной журнал ошибок с повторными попытками и интервальным повторением: дефицит закрывается до экзамена.</p>
+          </article>
+          <article class="block-card">
+            <span class="num">4</span>
+            <h3>Симуляция экзамена</h3>
+            <p>Пробные варианты с таймером и разбором, промежуточные и итоговая симуляции в формате реального экзамена.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Как это работает ================= -->
+    <section id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="how-title">Как проходит подготовка</h2>
+          <p>Четыре шага, которые повторяются в каждом разделе — вы всегда знаете, что делать дальше.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <h3>Мини-теория</h3>
+            <p>Короткие карточки с формулами, алгоритмами и типичными ловушками — ровно под задачи раздела.</p>
+          </article>
+          <article class="step">
+            <h3>Интерактивный тренажёр</h3>
+            <p>Пошаговые подсказки, адаптивная сложность и мгновенная обратная связь после каждого ответа.</p>
+          </article>
+          <article class="step">
+            <h3>Контрольный тест</h3>
+            <p>Проверка усвоения в экзаменационном формате с ограничением времени и без подсказок.</p>
+          </article>
+          <article class="step">
+            <h3>Рефлексия и повторение</h3>
+            <p>Короткий отчёт по разделу и автоматический возврат к ошибкам через день, три дня и неделю.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" style="background:#fff;border-top:1px solid var(--border);" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="faq-title">Частые вопросы</h2>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>Подойдёт ли курс, если я начинаю с нуля?</summary>
+            <p>Да. Входная диагностика определит стартовый уровень и построит маршрут: при необходимости курс начнётся с базовых вычислительных навыков.</p>
+          </details>
+          <details>
+            <summary>Нужно ли покупать учебники?</summary>
+            <p>Нет. Вся теория и задания находятся внутри курса. При желании можно дополнительно использовать сборники типовых вариантов под редакцией И. В. Ященко.</p>
+          </details>
+          <details>
+            <summary>Сколько времени нужно уделять занятиям?</summary>
+            <p>Рекомендуемый режим — 3–4 короткие сессии в неделю по 20–40 минут. Курс устроен так, чтобы короткие сессии были эффективны.</p>
+          </details>
+          <details>
+            <summary>Что делать, если я пропустил несколько дней?</summary>
+            <p>При возвращении в курс система предложит короткую сессию на восстановление контекста, а не весь накопленный объём сразу.</p>
+          </details>
+          <details>
+            <summary>Как вы храните персональные данные?</summary>
+            <p>Мы обрабатываем данные в соответствии с Федеральным законом № 152-ФЗ «О персональных данных». Подробнее — в <a href="privacy.html">Политике конфиденциальности</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Форма ================= -->
+    <section id="signup" aria-labelledby="signup-title">
+      <div class="container">
+        <div class="signup">
+          <div>
+            <h2 id="signup-title">Начните подготовку бесплатно</h2>
+            <p>Пройдите входную диагностику и получите персональный маршрут подготовки. Это займёт около 15 минут.</p>
+            <p class="form-note">
+              Нажимая кнопку, вы соглашаетесь с <a href="privacy.html">Политикой конфиденциальности</a>
+              и обработкой персональных данных в соответствии с ФЗ № 152-ФЗ.
+            </p>
+          </div>
+
+          <form class="signup-form" id="signupForm" action="#" method="post" novalidate>
+            <label>
+              <span class="sr-only">Имя</span>
+              <input type="text" name="name" placeholder="Как вас зовут" autocomplete="name" required />
+            </label>
+            <label>
+              <span class="sr-only">Email</span>
+              <input type="email" name="email" placeholder="Электронная почта" autocomplete="email" required />
+            </label>
+            <label>
+              <span class="sr-only">Направление подготовки</span>
+              <select name="track" required>
+                <option value="">Выберите направление</option>
+                <option value="oge">ОГЭ — 9 класс</option>
+                <option value="ege-base">ЕГЭ — базовый уровень</option>
+                <option value="ege-profile">ЕГЭ — профильный уровень</option>
+              </select>
+            </label>
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span>Согласен(на) на обработку персональных данных и принимаю <a href="privacy.html">Политику конфиденциальности</a></span>
+            </label>
+            <button type="submit">Начать бесплатно</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Контакты ================= -->
+    <section id="contacts" class="contacts" aria-labelledby="contacts-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="contacts-title">Контакты</h2>
+          <p>Свяжитесь с нами — ответим в рабочие дни.</p>
+        </div>
+
+        <div class="contacts-grid">
+          <div class="contact-card">
+            <h3>Электронная почта</h3>
+            <p>Для вопросов о курсе и сотрудничестве</p>
+            <span class="placeholder">[email@example.com]</span>
+          </div>
+          <div class="contact-card">
+            <h3>Телефон</h3>
+            <p>Пн–Пт, 10:00–19:00 (МСК)</p>
+            <span class="placeholder">[+7 (___) ___-__-__]</span>
+          </div>
+          <div class="contact-card">
+            <h3>Мессенджеры</h3>
+            <p>Telegram / WhatsApp для быстрых вопросов</p>
+            <span class="placeholder">[@username]</span>
+          </div>
+          <div class="contact-card">
+            <h3>Юридический адрес</h3>
+            <p>Реквизиты оператора персональных данных</p>
+            <span class="placeholder">[адрес, ИНН/ОГРН]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= Подвал ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo" style="color:#fff;">
+            <span class="logo-mark" style="background:#fff;color:var(--primary);" aria-hidden="true">∑</span>
+            <span>МатематикаPro</span>
+          </div>
+          <p style="margin-top:14px;color:#8fa3c4;">
+            Онлайн-курс самостоятельной подготовки к ОГЭ и ЕГЭ по математике.
+          </p>
+        </div>
+
+        <div>
+          <h4>Курс</h4>
+          <ul>
+            <li><a href="#tracks">Направления</a></li>
+            <li><a href="#blocks">Структура</a></li>
+            <li><a href="#how">Как это работает</a></li>
+            <li><a href="#faq">Вопросы</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Документы</h4>
+          <ul>
+            <li><a href="privacy.html">Политика конфиденциальности</a></li>
+            <li><a href="terms.html">Пользовательское соглашение</a></li>
+            <li><a href="consent.html">Согласие на обработку ПД</a></li>
+            <li><a href="cookie.html">Использование cookie</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Контакты</h4>
+          <ul>
+            <li><a href="#contacts">Все контакты</a></li>
+            <li><a href="mailto:email@example.com">email@example.com</a></li>
+            <li><a href="tel:+70000000000">+7 (___) ___-__-__</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> МатематикаPro. Все права защищены.</span>
+        <span>Обработка персональных данных осуществляется в соответствии с ФЗ № 152-ФЗ</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= Cookie banner ================= -->
+  <div class="cookie-banner hidden" id="cookieBanner" role="region" aria-label="Уведомление об использовании cookie">
+    <p>
+      Мы используем cookie, чтобы сайт работал корректно и чтобы улучшать его.
+      Продолжая пользоваться сайтом, вы соглашаетесь с
+      <a href="cookie.html">правилами использования cookie</a>.
+    </p>
+    <button id="cookieAccept" type="button">Принять</button>
+  </div>
+
+  <script>
+    // Год в подвале
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Мобильное меню
+    const burger = document.getElementById('burger');
+    const nav = document.getElementById('mainNav');
+    if (burger) {
+      burger.addEventListener('click', () => {
+        const opened = nav.classList.toggle('open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('open');
+          burger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Cookie banner (152-ФЗ, информирование пользователя)
+    const banner = document.getElementById('cookieBanner');
+    const acceptBtn = document.getElementById('cookieAccept');
+    const STORAGE_KEY = 'cookie_consent_v1';
+
+    try {
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        banner.classList.remove('hidden');
+      }
+    } catch (e) {
+      banner.classList.remove('hidden');
+    }
+
+    acceptBtn.addEventListener('click', () => {
+      try { localStorage.setItem(STORAGE_KEY, 'accepted'); } catch (e) {}
+      banner.classList.add('hidden');
+    });
+
+    // Простая валидация формы (демо). Замените на реальную отправку.
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.currentTarget;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      alert('Форма заполнена корректно. Здесь будет подключена реальная отправка данных.');
+    });
+  </script>
+
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</body>
+</html>
