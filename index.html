@@ -339,7 +339,7 @@
       flex-direction: column;
       gap: 14px;
     }
-       /* Стилизуем только текстовые поля и селект */
+        /* Стилизуем только текстовые поля и селект */
     form.signup-form input[type="text"],
     form.signup-form input[type="email"],
     form.signup-form select {
@@ -374,6 +374,17 @@
       box-sizing: border-box;
     }
 
+    /* Стили для ссылки внутри блока согласия */
+    .consent a {
+      color: #ffd97a; /* Возвращаем желтый цвет */
+      text-decoration: underline;
+      transition: color 0.15s ease;
+    }
+    
+    .consent a:hover {
+      color: #ffffff; /* При наведении становится белой */
+      text-decoration: none;
+    }
     /* Стили только для чекбокса */
     .consent input[type="checkbox"] {
       width: 18px;
@@ -389,6 +400,20 @@
     /* Текст занимает оставшееся место */
     .consent span {
       flex: 1;
+    }
+    /* Возвращаем стили для кнопки отправки */
+    form.signup-form button {
+      background: var(--accent); /* Оранжевый цвет */
+      color: #1c2533; /* Темный текст */
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease;
+      width: 100%; /* Растягиваем на всю ширину колонки */
+      margin-top: 8px; /* Небольшой отступ сверху */
     }
     form.signup-form button:hover { background: #e5941b; }
     form.signup-form button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
