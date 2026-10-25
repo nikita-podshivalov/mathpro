@@ -339,7 +339,9 @@
       flex-direction: column;
       gap: 14px;
     }
-    form.signup-form input,
+       /* Стилизуем только текстовые поля и селект */
+    form.signup-form input[type="text"],
+    form.signup-form input[type="email"],
     form.signup-form select {
       width: 100%;
       padding: 13px 16px;
@@ -349,32 +351,44 @@
       font-family: inherit;
       color: var(--text);
       background: #fff;
+      box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
     }
-    form.signup-form input:focus,
+
+    form.signup-form input[type="text"]:focus,
+    form.signup-form input[type="email"]:focus,
     form.signup-form select:focus {
       outline: 3px solid #ffd97a;
       outline-offset: 1px;
     }
+
+    /* Блок с галочкой и текстом */
     .consent {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: flex-start;
       font-size: 14px;
       color: #dbe6f5;
       line-height: 1.5;
-    }
-    .consent input { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
-    .consent a { color: #ffd97a; }
-    form.signup-form button {
-      background: var(--accent);
-      color: #1c2533;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
       cursor: pointer;
-      transition: background .15s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Стили только для чекбокса */
+    .consent input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 2px 0 0 0; /* Выравниваем по верхней линии текста */
+      flex-shrink: 0;
+      cursor: pointer;
+      padding: 0; /* Убираем лишние отступы */
+      box-sizing: border-box;
+      accent-color: var(--accent); /* Делает галочку оранжевой в современных браузерах */
+    }
+
+    /* Текст занимает оставшееся место */
+    .consent span {
+      flex: 1;
     }
     form.signup-form button:hover { background: #e5941b; }
     form.signup-form button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
